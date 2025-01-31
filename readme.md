@@ -22,7 +22,7 @@ ruby gems dependencies:
 
 steps:
 
-1. copy `neogities_githook.rb` to your site's root folder (i.e., same folder as
+1. copy `neogities.rb` to your site's root folder (i.e., same folder as
    .git)
 2. copy `pre-commit` and `pre-push` to `.git/hooks`
 3. n then just do all your git stuff same as normal. every time you push to
