@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "open3"
+puts "writing to status.txt"
 
-stdout = Open3.capture3("git status --porcelain")[0]
+stdout = `git status --porcelain`
 File.open("status.txt", "w") { |file| file.write(stdout) }

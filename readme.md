@@ -15,7 +15,6 @@ that
 ruby gems dependencies:
 
 - neocities
-- open3
 - tty-prompt
 
 ---
@@ -27,3 +26,6 @@ steps:
 2. copy `pre-commit` and `pre-push` to `.git/hooks`
 3. n then just do all your git stuff same as normal. every time you push to
    your repo the modified files will also be uploaded to neocities :)
+
+\*this works by writing to `status.txt` every time you commit so you might want
+to add that to your gitignore.

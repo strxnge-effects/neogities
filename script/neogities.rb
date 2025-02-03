@@ -1,6 +1,4 @@
-# git hook version yay :3
 require "neocities"
-require "open3"
 require "tty-prompt"
 
 class Neogities
@@ -64,7 +62,7 @@ class Neogities
     splitted = Array(splitted) << line.split(" ", 2)
     # nvm spaces will NOT work.. idk why. get em outta your file names!!!
   end
-  
+
 
   # > do the thing
   for line in splitted
