@@ -1,6 +1,8 @@
 require "neocities"
 require "tty-prompt"
 
+puts "updating files on neocities"
+
 class Neogities
   status = File.read("status.txt")
 

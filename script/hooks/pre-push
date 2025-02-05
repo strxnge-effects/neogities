@@ -1,4 +1,3 @@
 #!/bin/sh
 
-echo "updating files on neocities"
 ruby neogities.rb
