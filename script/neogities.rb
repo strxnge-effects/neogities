@@ -39,9 +39,9 @@ class Neogities
 
   def self.rename_file(line)
     split2 = line[1].split
-    print "rename: " + split2[0] + " to " + split2[2] + "\n" + "..."
+    print "rename: " + split2[0] + " to " + split2[2] + "..."
     resp = @neogities.upload(split2[2], split2[2])
-    self.delete_file(split2[0])
+    @neogities.delete(split2[0])
     self.display_response(resp)
   end
 
@@ -61,18 +61,20 @@ class Neogities
 
 
   for line in status.split("\n")
-    splitted = Array(splitted) << line.split(" ", 2)
-    # nvm spaces will NOT work.. idk why. get em outta your file names!!!
+    unless line.include?(".gitignore")
+      splitted = Array(splitted) << [line[0..1], line[3..-1]]
+    end
+    # will spaces in the filenames work now or nah
   end
 
 
   # > do the thing
   for line in splitted
-    if (line[0] == "M" || line[0] == "A") # modified / added
+    if (line[0] == "M " || line[0] == "A ") # modified / added
       self.upload_file(line[1])
-    elsif line[0] == "D" # deleted
+    elsif line[0] == "D " # deleted
       self.delete_file(line[1])
-    elsif line[0] == "R" # renamed
+    elsif line[0] == "R " # renamed
       self.rename_file(line)
     else # anything else idc
       puts "ignore: #{line[1]}"
