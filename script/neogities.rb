@@ -1,9 +1,11 @@
 require "neocities"
+require "pastel"
 require "tty-prompt"
 
 puts "updating files on neocities"
 
 class Neogities
+  @pastel = Pastel.new eachline: "\n"
   status = File.read("status.txt")
 
   # > neocities gem setup
@@ -16,9 +18,10 @@ class Neogities
     if data
       yourkey = data["API_KEY"].strip
     end
+
   rescue Errno::ENOENT
     yourkey = nil
-    print "API key not found, please login usig the neocities module :("
+    print "API key not found, please login with the neocities module :("
   end
 
   @neogities = Neocities::Client.new(api_key: yourkey) # create new instance
@@ -26,20 +29,23 @@ class Neogities
 
   # > uploading n things
   def self.upload_file(path)
-    print "upload: " + path + "..."
+    print "upload: #{path}..."
+
     resp = @neogities.upload(path, path)
     self.display_response(resp)
   end
 
   def self.delete_file(path)
-    print "delete: " + path + "..."
+    print "delete: #{path}..."
+
     resp = @neogities.delete(path)
     self.display_response(resp)
   end
 
   def self.rename_file(line)
     split2 = line[1].split
-    print "rename: " + split2[0] + " to " + split2[2] + "..."
+    print "rename: #{split2[0]} to #{split2[2]}..."
+
     resp = @neogities.upload(split2[2], split2[2])
     @neogities.delete(split2[0])
     self.display_response(resp)
@@ -47,13 +53,15 @@ class Neogities
 
   def self.display_response(resp) # copied this from the gem lol
     if resp[:result] == 'success'
-      puts "SUCCESS"
+      puts "#{@pastel.green.bold 'SUCCESS'}"
+
     elsif resp[:result] == 'error' && resp[:error_type] == 'file_exists'
-      out = "EXISTS: " + resp[:message]
+      out = "#{pastel.yellow.bold 'EXISTS: '} #{resp[:message]}"
       out += " (#{resp[:error_type]})" if resp[:error_type]
       puts out
+
     else
-      out = "ERROR: " + resp[:message]
+      out = "#{@pastel.red.bold 'ERROR:'} #{resp[:message]}"
       out += " (#{resp[:error_type]})" if resp[:error_type]
       puts out
     end
@@ -61,10 +69,10 @@ class Neogities
 
 
   for line in status.split("\n")
+    # will spaces in the filenames work now or nah
     unless line.include?(".gitignore")
       splitted = Array(splitted) << [line[0..1], line[3..-1]]
     end
-    # will spaces in the filenames work now or nah
   end
 
 
@@ -72,12 +80,16 @@ class Neogities
   for line in splitted
     if (line[0] == "M " || line[0] == "A ") # modified / added
       self.upload_file(line[1])
+
     elsif line[0] == "D " # deleted
       self.delete_file(line[1])
+
     elsif line[0] == "R " # renamed
       self.rename_file(line)
-    else # anything else idc
-      puts "ignore: #{line[1]}"
     end
+
+    # anything else will be ignored ok
   end
+
+  print "\n"
 end
