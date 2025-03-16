@@ -2,7 +2,7 @@ require "neocities"
 require "pastel"
 require "tty-prompt"
 
-puts "updating files on neocities"
+puts "updating files on neocities..."
 
 class Neogities
   @pastel = Pastel.new eachline: "\n"
@@ -29,14 +29,14 @@ class Neogities
 
   # > uploading n things
   def self.upload_file(path)
-    print "upload: #{path}..."
+    print "UPLOAD: #{path}..."
 
     resp = @neogities.upload(path, path)
     self.display_response(resp)
   end
 
   def self.delete_file(path)
-    print "delete: #{path}..."
+    print "DELETE: #{path}..."
 
     resp = @neogities.delete(path)
     self.display_response(resp)
@@ -44,7 +44,7 @@ class Neogities
 
   def self.rename_file(line)
     split2 = line[1].split
-    print "rename: #{split2[0]} to #{split2[2]}..."
+    print "RENAME: #{split2[0]} to #{split2[2]}..."
 
     resp = @neogities.upload(split2[2], split2[2])
     @neogities.delete(split2[0])
