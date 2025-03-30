@@ -56,7 +56,7 @@ class Neogities
       puts "#{@pastel.green.bold 'SUCCESS'}"
 
     elsif resp[:result] == 'error' && resp[:error_type] == 'file_exists'
-      out = "#{pastel.yellow.bold 'EXISTS: '} #{resp[:message]}"
+      out = "#{@pastel.yellow.bold 'EXISTS: '} #{resp[:message]}"
       out += " (#{resp[:error_type]})" if resp[:error_type]
       puts out
 
