@@ -1,12 +1,20 @@
-i'm not very good at naming things
+## overview
+
+`neogities.rb` updates your files on neocities.
+
+`pre-commit` writes a list of every modified file to `status.txt` when you
+commit your changes.
+
+`pre-push` runs `neogities.rb` when you push your changes.
 
 
-## background??
+### "how is this different from `neocities push .`?"
 
-the regular `neocities push .` command will attempt to upload **all** files in
-your root directory, regardless of whether or not they've been modified. this
-sucks! especially if you have a lot of files. so i wrote this little script to
-address that issue, using git's tracking of changes
+1. rather than attempting to upload **all** files in your site directory,
+   neogities uses `git status` to only update the files that've been modified.
+2. `neocities push` will only *upload* files, it does not delete or rename a
+   file when you perform the same action on your local repo. neogities.rb does.
+   :)
 
 
 ## usage
@@ -17,10 +25,10 @@ steps:
    .git)
 2. copy `pre-commit` and `pre-push` to `.git/hooks`
 3. n then just do all your git stuff same as normal. every time you push to
-   your repo the modified files will also be uploaded to neocities :)
+   your remote repo the changes will also be reflected on neocities :)
 
-this works by writing a list of modified files to `status.txt` every time you
-commit, so you might want to add that to your gitignore.
+remember to add `status.txt` to your gitignore so it doesn't get updated every
+time!
 
 
 ### note for linux users
@@ -31,9 +39,10 @@ if you get an error like this:
 
 you'll have to run these commands from your site's root directory:
 
-```chmod +x .git/hooks/pre-commit```
-
-```chmod +x .git/hooks/pre-push```
+```
+chmod +x .git/hooks/pre-commit
+chmod +x .git/hooks/pre-push
+```
 
 because something something file permissions idk.
 ([source](https://stackoverflow.com/questions/8598639/why-is-my-git-pre-commit-hook-not-executable-by-default#comment88478230_47166916))
