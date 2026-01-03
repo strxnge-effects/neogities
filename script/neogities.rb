@@ -68,27 +68,28 @@ class Neogities
   end
 
 
-  for line in status.split("\n")
-    # will spaces in the filenames work now or nah
-    unless line.include?(".gitignore")
-      splitted = Array(splitted) << [line[0..1], line[3..-1]]
-    end
-  end
-
-
-  # > do the thing
-  for line in splitted
-    if (line[0] == "M " || line[0] == "A ") # modified / added
-      self.upload_file(line[1])
-
-    elsif line[0] == "D " # deleted
-      self.delete_file(line[1])
-
-    elsif line[0] == "R " # renamed
-      self.rename_file(line)
+  begin
+    for line in status.split("\n")
+      unless line.include?(".gitignore")
+        splitted = Array(splitted) << [line[0..1], line[3..-1]]
+      end
     end
 
-    # anything else will be ignored ok
+    # > update website on neocities
+    for line in splitted
+      if (line[0] == "M " || line[0] == "A ") # modified / added
+        self.upload_file(line[1])
+
+      elsif line[0] == "D " # deleted
+        self.delete_file(line[1])
+
+      elsif line[0] == "R " # renamed
+        self.rename_file(line)
+      end
+    end
+
+  rescue NoMethodError # returned if status.txt is blank
+    puts "INFO: status.txt is blank. your changes will not be pushed to neocities."
   end
 
   print "\n"
