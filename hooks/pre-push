@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require "neocities"
 require "pastel"
 require "tty-prompt"
@@ -12,8 +14,8 @@ class Neogities
   configpath = File.join(Neocities::CLI.app_config_path("neocities"), "config.json")
 
   begin # fetch api key
-    file = File.read configpath
-    data = JSON.load file
+    file = File.read(configpath)
+    data = JSON.load(file)
 
     if data
       yourkey = data["API_KEY"].strip
@@ -21,7 +23,7 @@ class Neogities
 
   rescue Errno::ENOENT
     yourkey = nil
-    print "API key not found, please login with the neocities module :("
+    print "API key not found, please login with the neocities module"
   end
 
   @neogities = Neocities::Client.new(api_key: yourkey) # create new instance
@@ -68,6 +70,7 @@ class Neogities
   end
 
 
+  # > update website on neocities
   begin
     for line in status.split("\n")
       unless line.include?(".gitignore")
@@ -75,7 +78,6 @@ class Neogities
       end
     end
 
-    # > update website on neocities
     for line in splitted
       if (line[0] == "M " || line[0] == "A ") # modified / added
         self.upload_file(line[1])
