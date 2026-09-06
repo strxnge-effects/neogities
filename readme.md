@@ -1,11 +1,9 @@
 ## overview
 
-`neogities.rb` updates your files on neocities.
-
 `pre-commit` writes a list of every modified file to `status.txt` when you
 commit your changes.
 
-`pre-push` runs `neogities.rb` when you push your changes.
+`pre-push` updates your files on neocities.
 
 
 ### "how is this different from `neocities push .`?"
@@ -13,18 +11,14 @@ commit your changes.
 1. rather than attempting to upload **all** files in your site directory,
    neogities uses `git status` to only update the files that've been modified.
 2. `neocities push` will only *upload* files, it does not delete or rename a
-   file when you perform the same action on your local repo. neogities.rb does.
+   file when you perform the same action on your local repo. neogities does.
    :)
 
 
 ## usage
 
-steps:
-
-1. copy `neogities.rb` to your site's root folder (i.e., same folder as
-   .git)
-2. copy `pre-commit` and `pre-push` to `.git/hooks`
-3. n then just do all your git stuff same as normal. every time you push to
+1. copy `pre-commit` and `pre-push` to `.git/hooks`
+2. n then just do all your git stuff same as normal. every time you push to
    your remote repo the changes will also be reflected on neocities :)
 
 remember to add `status.txt` to your gitignore so it doesn't get updated every
